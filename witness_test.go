@@ -25,14 +25,6 @@ func stub() {
 	}
 }
 
-func TestExample(t *testing.T) {
-	// g := "a\nb\nc"
-	// e := "a\nd\nc"
-
-	// // Simple report
-	// Got(g).Expect(e).Info("Example Label", "Some info").Fail(t, "Not same")
-}
-
 func TestFailGot(t *testing.T) {
 	stub()
 
