@@ -5,21 +5,77 @@
 <a href="https://goreportcard.com/report/github.com/bayashi/witness" title="witness report card" target="_blank"><img src="https://goreportcard.com/badge/github.com/bayashi/witness" alt="witness report card"></a>
 <a href="https://pkg.go.dev/github.com/bayashi/witness" title="Go witness package reference" target="_blank"><img src="https://pkg.go.dev/badge/github.com/bayashi/witness.svg" alt="Go Reference: witness"></a>
 
-`witness` provides 
+`witness` is a test helper to make an evident report on a fail of your test.
 
 ## Usage
+
+Simple case.
 
 ```go
 package main
 
 import (
-    "fmt"
+    "testing"
+
+    w "github.com/bayashi/witness"
 )
 
-func main() {
+func TestExample(t *testing.T) {
+    g := "a\nb\nc"
+    e := "a\nd\nc"
 
+    if g != e {
+        w.Got(g).Expect(e).Fail(t, "Not same")
+    }
 }
 ```
+
+below result will be shown:
+
+```go
+Trace:          /home/usr/go/src/github.com/bayashi/witness/witness_test.go:33
+Fail reason:    Not same
+Type:           Expect:string, Got:string
+Expected:       "a\nd\nc"
+Actually got:   "a\nb\nc"
+```
+
+It's able to show more additional info:
+
+```go
+w.Got(g).Expect(e).ShowMore().Fail(t, "Not same")
+```
+
+And then,
+
+```go
+Trace:          /home/usr/go/src/github.com/bayashi/witness/witness_test.go:41
+Fail reason:    Not same
+Type:           Expect:string, Got:string
+Expected:       "a\nd\nc"
+Actually got:   "a\nb\nc"
+Diff details:   --- Expected
+                +++ Actually got
+                @@ -1,3 +1,3 @@
+                 a
+                -d
+                +b
+                 c
+Raw Expect:     ---
+                a
+                d
+                c
+                ---
+Raw Got:        ---
+                a
+                b
+                c
+                ---
+```
+
+So easy and fair, isn't this?
+
+You shouldn't need to spend your time anymore to show fail report.
 
 ## Installation
 
@@ -34,3 +90,11 @@ MIT License
 ## Author
 
 Dai Okabayashi: https://github.com/bayashi
+
+## See Also
+
+https://github.com/bayashi/actually
+
+## Special Thanks To
+
+https://github.com/stretchr/testify

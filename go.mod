@@ -1,3 +1,8 @@
 module github.com/bayashi/witness
 
-go 1.18
+go 1.21
+
+require (
+	github.com/davecgh/go-spew v1.1.1
+	github.com/pmezard/go-difflib v1.0.0
+)
