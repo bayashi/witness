@@ -25,20 +25,16 @@ func stub() {
 	}
 }
 
-func TestExample(t *testing.T) {
-	// g := "a\nb\nc"
-	// e := "a\nd\nc"
-
-	// // Simple report
-	// Got(g).Expect(e).Info("Example Label", "Some info").Fail(t, "Not same")
-}
-
 func TestFailGot(t *testing.T) {
 	stub()
 
 	got := "got string"
 	reason := "failure reason"
 	Got(got).Fail(t, reason)
+
+	// Fail reason:    failure reason
+	// Type:           Got:string
+	// Actually got:   "got string"
 
 	if !strings.Contains(res, "Trace:") {
 		t.Errorf("Expected to be contained the string `Trace:`, but not: %q", res)
@@ -69,6 +65,11 @@ func TestFailGotExpect(t *testing.T) {
 	expect := "expect string"
 	reason := "failure reason"
 	Got(got).Expect(expect).Fail(t, reason)
+
+	// Fail reason:    failure reason
+	// Type:           Expect:string, Got:string
+	// Expected:       "expect string"
+	// Actually got:   "got string"
 
 	if !strings.Contains(res, "Trace:") {
 		t.Errorf("Expected to be contained the string `Trace:`, but not: %q", res)
@@ -165,7 +166,7 @@ func TestFailWithRawData(t *testing.T) {
 	}
 }
 
-func TestFailWithAdditionalInfo(t *testing.T) {
+func TestFailWithAdditionalMessage(t *testing.T) {
 	stub()
 
 	g := "a\nb\nc"
