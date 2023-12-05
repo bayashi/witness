@@ -166,7 +166,7 @@ func TestFailWithRawData(t *testing.T) {
 	}
 }
 
-func TestFailWithAdditionalInfo(t *testing.T) {
+func TestFailWithAdditionalMessage(t *testing.T) {
 	stub()
 
 	g := "a\nb\nc"
