@@ -33,7 +33,7 @@ func TestExample(t *testing.T) {
 below result will be shown:
 
 ```go
-Trace:          /home/usr/go/src/github.com/bayashi/witness/witness_test.go:33
+Trace:          /home/usr/go/src/github.com/bayashi/witness/witness_test.go:14
 Fail reason:    Not same
 Type:           Expect:string, Got:string
 Expected:       "a\nd\nc"
@@ -49,7 +49,7 @@ w.Got(g).Expect(e).ShowMore().Fail(t, "Not same")
 And then,
 
 ```go
-Trace:          /home/usr/go/src/github.com/bayashi/witness/witness_test.go:41
+Trace:          /home/usr/go/src/github.com/bayashi/witness/witness_test.go:14
 Fail reason:    Not same
 Type:           Expect:string, Got:string
 Expected:       "a\nd\nc"
@@ -76,6 +76,10 @@ Raw Got:        ---
 So easy and fair, isn't this?
 
 You shouldn't need to spend your time anymore to show fail report.
+
+## Methods
+
+See [Witness Package reference](https://pkg.go.dev/github.com/bayashi/witness)
 
 ## Installation
 
