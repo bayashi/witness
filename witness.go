@@ -42,11 +42,13 @@ func (w *Witness) ShowDiff() *Witness {
 	w.showDiff = true
 	return w
 }
+
 // Turn on a flag to show raw values
 func (w *Witness) ShowRaw() *Witness {
 	w.showRaw = true
 	return w
 }
+
 // Turn on flags for both showDiff and showRaw
 func (w *Witness) ShowMore() *Witness {
 	return w.ShowDiff().ShowRaw()
@@ -63,6 +65,7 @@ func (w *Witness) Name(n string) *Witness {
 
 	return w
 }
+
 // Set test name by format
 func Namef(format string, a ...any) *Witness {
 	return &Witness{
@@ -154,20 +157,27 @@ func (w *Witness) buildReport(reason string) *report.Failure {
 	}
 
 	if w.showRaw {
-		template := "---\n%s\n---"
-		if w.got != nil && w.got.Touch() {
-			if w.got.IsStringType() {
-				r.RawGot(fmt.Sprintf(template, w.got.AsRawValue()))
-			} else if w.got.IsDumpableRawType() {
-				r.RawGot(w.got.AsDumpString())
-			}
+		r = setRawForReport(w, r)
+	}
+
+	return r
+}
+
+const rawDataTemplate = "---\n%s\n---"
+
+func setRawForReport(w *Witness, r *report.Failure) *report.Failure {
+	if w.got != nil && w.got.Touch() {
+		if w.got.IsStringType() {
+			r.RawGot(fmt.Sprintf(rawDataTemplate, w.got.AsRawValue()))
+		} else if w.got.IsDumpableRawType() {
+			r.RawGot(w.got.AsDumpString())
 		}
-		if w.expect != nil && w.expect.Touch() {
-			if w.expect.IsStringType() {
-				r.RawExpect(fmt.Sprintf(template, w.expect.AsRawValue()))
-			} else if w.expect.IsDumpableRawType() {
-				r.RawExpect(w.expect.AsDumpString())
-			}
+	}
+	if w.expect != nil && w.expect.Touch() {
+		if w.expect.IsStringType() {
+			r.RawExpect(fmt.Sprintf(rawDataTemplate, w.expect.AsRawValue()))
+		} else if w.expect.IsDumpableRawType() {
+			r.RawExpect(w.expect.AsDumpString())
 		}
 	}
 
@@ -175,8 +185,9 @@ func (w *Witness) buildReport(reason string) *report.Failure {
 }
 
 // Fail is shortcut method. These are same expression.
-//     witness.Got(got).Expect(expect).Fail(t, reason)
-//     witness.Fail(t, reason, expect, got)
+//
+//	witness.Got(got).Expect(expect).Fail(t, reason)
+//	witness.Fail(t, reason, expect, got)
 func Fail(t *testing.T, reason string, expect any, got any) {
 	Got(got).Expect(expect).Fail(t, reason)
 }

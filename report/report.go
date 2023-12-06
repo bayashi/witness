@@ -13,15 +13,15 @@ import (
 const labelTag = "label"
 
 type Failure struct {
-	expect       *obj.Object `label:"Expected"`
-	got          *obj.Object `label:"Actually got"`
-	diff         string `label:"Diff details"`
-	rawExpect    string `label:"Raw Expect"`
-	rawGot       string `label:"Raw Got"`
-	reason       string `label:"Fail reason"`
-	name         string `label:"Test Name"`
-	trace        string `label:"Trace"`
-	messages     []map[string]string
+	expect    *obj.Object `label:"Expected"`
+	got       *obj.Object `label:"Actually got"`
+	diff      string      `label:"Diff details"`
+	rawExpect string      `label:"Raw Expect"`
+	rawGot    string      `label:"Raw Got"`
+	reason    string      `label:"Fail reason"`
+	name      string      `label:"Test Name"`
+	trace     string      `label:"Trace"`
+	messages  []map[string]string
 }
 
 func NewFailure() *Failure {
@@ -99,6 +99,18 @@ func (f *Failure) Put() string {
 	return lines
 }
 
+func (f *Failure) buildTypeBody() string {
+	var types []string
+	if f.expect != nil && f.expect.Touch() {
+		types = append(types, fmt.Sprintf("Expect:%s", f.expect.AsType()))
+	}
+	if f.got != nil && f.got.Touch() {
+		types = append(types, fmt.Sprintf("Got:%s", f.got.AsType()))
+	}
+
+	return strings.Join(types, ", ")
+}
+
 func (f *Failure) buildContents() []*Content {
 	var contents []*Content
 
@@ -113,15 +125,7 @@ func (f *Failure) buildContents() []*Content {
 	}
 
 	if (f.expect != nil && f.expect.Touch()) || (f.got != nil && f.got.Touch()) {
-		var types []string
-		if f.expect != nil && f.expect.Touch() {
-			types = append(types, fmt.Sprintf("Expect:%s", f.expect.AsType()))
-		}
-		if f.got != nil && f.got.Touch() {
-			types = append(types, fmt.Sprintf("Got:%s", f.got.AsType()))
-		}
-		body := strings.Join(types, ", ")
-		contents = append(contents, &Content{Label: "Type", Body: body})
+		contents = append(contents, &Content{Label: "Type", Body: f.buildTypeBody()})
 	}
 
 	if f.expect != nil && f.expect.Touch() {
