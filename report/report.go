@@ -99,6 +99,18 @@ func (f *Failure) Put() string {
 	return lines
 }
 
+func (f *Failure) buildTypeBody() string {
+	var types []string
+	if f.expect != nil && f.expect.Touch() {
+		types = append(types, fmt.Sprintf("Expect:%s", f.expect.AsType()))
+	}
+	if f.got != nil && f.got.Touch() {
+		types = append(types, fmt.Sprintf("Got:%s", f.got.AsType()))
+	}
+
+	return strings.Join(types, ", ")
+}
+
 func (f *Failure) buildContents() []*Content {
 	var contents []*Content
 
@@ -113,15 +125,7 @@ func (f *Failure) buildContents() []*Content {
 	}
 
 	if (f.expect != nil && f.expect.Touch()) || (f.got != nil && f.got.Touch()) {
-		var types []string
-		if f.expect != nil && f.expect.Touch() {
-			types = append(types, fmt.Sprintf("Expect:%s", f.expect.AsType()))
-		}
-		if f.got != nil && f.got.Touch() {
-			types = append(types, fmt.Sprintf("Got:%s", f.got.AsType()))
-		}
-		body := strings.Join(types, ", ")
-		contents = append(contents, &Content{Label: "Type", Body: body})
+		contents = append(contents, &Content{Label: "Type", Body: f.buildTypeBody()})
 	}
 
 	if f.expect != nil && f.expect.Touch() {
