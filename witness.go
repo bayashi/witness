@@ -157,20 +157,27 @@ func (w *Witness) buildReport(reason string) *report.Failure {
 	}
 
 	if w.showRaw {
-		template := "---\n%s\n---"
-		if w.got != nil && w.got.Touch() {
-			if w.got.IsStringType() {
-				r.RawGot(fmt.Sprintf(template, w.got.AsRawValue()))
-			} else if w.got.IsDumpableRawType() {
-				r.RawGot(w.got.AsDumpString())
-			}
+		r = setRawForReport(w, r)
+	}
+
+	return r
+}
+
+const rawDataTemplate = "---\n%s\n---"
+
+func setRawForReport(w *Witness, r *report.Failure) *report.Failure {
+	if w.got != nil && w.got.Touch() {
+		if w.got.IsStringType() {
+			r.RawGot(fmt.Sprintf(rawDataTemplate, w.got.AsRawValue()))
+		} else if w.got.IsDumpableRawType() {
+			r.RawGot(w.got.AsDumpString())
 		}
-		if w.expect != nil && w.expect.Touch() {
-			if w.expect.IsStringType() {
-				r.RawExpect(fmt.Sprintf(template, w.expect.AsRawValue()))
-			} else if w.expect.IsDumpableRawType() {
-				r.RawExpect(w.expect.AsDumpString())
-			}
+	}
+	if w.expect != nil && w.expect.Touch() {
+		if w.expect.IsStringType() {
+			r.RawExpect(fmt.Sprintf(rawDataTemplate, w.expect.AsRawValue()))
+		} else if w.expect.IsDumpableRawType() {
+			r.RawExpect(w.expect.AsDumpString())
 		}
 	}
 
