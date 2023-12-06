@@ -13,15 +13,15 @@ import (
 const labelTag = "label"
 
 type Failure struct {
-	expect       *obj.Object `label:"Expected"`
-	got          *obj.Object `label:"Actually got"`
-	diff         string `label:"Diff details"`
-	rawExpect    string `label:"Raw Expect"`
-	rawGot       string `label:"Raw Got"`
-	reason       string `label:"Fail reason"`
-	name         string `label:"Test Name"`
-	trace        string `label:"Trace"`
-	messages     []map[string]string
+	expect    *obj.Object `label:"Expected"`
+	got       *obj.Object `label:"Actually got"`
+	diff      string      `label:"Diff details"`
+	rawExpect string      `label:"Raw Expect"`
+	rawGot    string      `label:"Raw Got"`
+	reason    string      `label:"Fail reason"`
+	name      string      `label:"Test Name"`
+	trace     string      `label:"Trace"`
+	messages  []map[string]string
 }
 
 func NewFailure() *Failure {

@@ -42,11 +42,13 @@ func (w *Witness) ShowDiff() *Witness {
 	w.showDiff = true
 	return w
 }
+
 // Turn on a flag to show raw values
 func (w *Witness) ShowRaw() *Witness {
 	w.showRaw = true
 	return w
 }
+
 // Turn on flags for both showDiff and showRaw
 func (w *Witness) ShowMore() *Witness {
 	return w.ShowDiff().ShowRaw()
@@ -63,6 +65,7 @@ func (w *Witness) Name(n string) *Witness {
 
 	return w
 }
+
 // Set test name by format
 func Namef(format string, a ...any) *Witness {
 	return &Witness{
@@ -175,8 +178,9 @@ func (w *Witness) buildReport(reason string) *report.Failure {
 }
 
 // Fail is shortcut method. These are same expression.
-//     witness.Got(got).Expect(expect).Fail(t, reason)
-//     witness.Fail(t, reason, expect, got)
+//
+//	witness.Got(got).Expect(expect).Fail(t, reason)
+//	witness.Fail(t, reason, expect, got)
 func Fail(t *testing.T, reason string, expect any, got any) {
 	Got(got).Expect(expect).Fail(t, reason)
 }
