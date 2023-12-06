@@ -77,9 +77,14 @@ So easy and fair, isn't this?
 
 You shouldn't need to spend your time anymore to show fail report.
 
-## Methods
+And, there is a shortcut function instead of builder interface. Below lines are same.
 
-See [Witness Package reference](https://pkg.go.dev/github.com/bayashi/witness)
+```go
+    w.Got(g).Expect(e).Fail(t, "Not same")
+    w.Fail(t, "Not same", e, g)
+```
+
+See [Witness Package reference](https://pkg.go.dev/github.com/bayashi/witness) for more details.
 
 ## Installation
 
