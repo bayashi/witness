@@ -63,6 +63,8 @@ func (o *Object) AsString() string {
 		return fmt.Sprintf("%d", o.value)
 	case float32, float64, complex64, complex128:
 		return fmt.Sprintf("%g", o.value)
+	case error:
+		return fmt.Sprintf("%+v", o.value)
 	default:
 		return fmt.Sprintf("%#v", o.value)
 	}
