@@ -77,11 +77,11 @@ So easy and fair, isn't this?
 
 You shouldn't need to spend your time anymore to show fail report.
 
-And, there is a shortcut function instead of builder interface. Below lines are same.
+And, there is a shortcut function, direct `Fail`, instead of builder interface. Below lines are same.
 
 ```go
     w.Got(g).Expect(e).Fail(t, "Not same")
-    w.Fail(t, "Not same", e, g)
+    w.Fail(t, "Not same", g, e)
 ```
 
 See [Witness Package reference](https://pkg.go.dev/github.com/bayashi/witness) for more details.
