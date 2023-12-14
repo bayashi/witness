@@ -124,20 +124,24 @@ func (w *Witness) Message(label string, msg string) *Witness {
 }
 
 var funcFail = func(t *testing.T, r *report.Failure) {
+	t.Helper()
 	t.Error(r.Put())
 }
 
 // Do fail with report
 func (w *Witness) Fail(t *testing.T, reason string) {
+	t.Helper()
 	funcFail(t, w.buildReport(reason))
 }
 
 var funcFailNow = func(t *testing.T, r *report.Failure) {
+	t.Helper()
 	t.Fatal(r.Put())
 }
 
 // Do fail with report and stop running test right now
 func (w *Witness) FailNow(t *testing.T, reason string) {
+	t.Helper()
 	funcFailNow(t, w.buildReport(reason))
 }
 
