@@ -51,7 +51,7 @@ func Info() []string {
 		lastCaller = fmt.Sprintf("%s:%d", file, line)
 
 		if len(strings.Split(file, "/")) > 1 && // https://github.com/stretchr/testify/pull/402
-			!skipMyself(file) && !strings.Contains(file, "/actually") {
+			!skipMyself(file) {
 			callers = append(callers, lastCaller)
 		}
 
