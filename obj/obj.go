@@ -52,6 +52,10 @@ func (o *Object) AsString() string {
 		return ""
 	}
 
+	if _, assertOK := o.value.(error); assertOK {
+		return fmt.Sprintf("%+v", o.value)
+	}
+
 	switch o.value.(type) {
 	case string, []byte:
 		return fmt.Sprintf("%q", o.value)
@@ -63,8 +67,6 @@ func (o *Object) AsString() string {
 		return fmt.Sprintf("%d", o.value)
 	case float32, float64, complex64, complex128:
 		return fmt.Sprintf("%g", o.value)
-	case error:
-		return fmt.Sprintf("%+v", o.value)
 	default:
 		return fmt.Sprintf("%#v", o.value)
 	}
