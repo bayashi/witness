@@ -43,7 +43,7 @@ func (o *Object) AsRawValue() any {
 }
 
 func (o *Object) AsType() string {
-	return fmt.Sprintf("%Y", o.value)
+	return fmt.Sprintf("%T", o.value)
 }
 
 // Return the value as string that was converted by fmt.Sprintf for each type
@@ -103,7 +103,7 @@ func (o *Object) IsDumpableRawType() bool {
 	return false
 }
 
-// For `fmt/print.go` Formatter interface
+// format and truncate. For `fmt/print.go` Formatter interface
 func (o *Object) Format(s fmt.State, verb rune) {
 	switch verb {
 	case 'v':
@@ -115,9 +115,6 @@ func (o *Object) Format(s fmt.State, verb rune) {
 			flag += "#"
 		}
 		fmt.Fprint(s, truncate(o.value, fmt.Sprintf("%%%sv", flag), o.maxLen))
-	case 'Y':
-		d := fmt.Sprintf("%T", o.value)
-		fmt.Fprint(s, d)
 	case 's':
 		fmt.Fprint(s, truncate(o.value, "%s", o.maxLen))
 	}

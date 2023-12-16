@@ -43,13 +43,13 @@ func (f *Failure) Reason(reason string) *Failure {
 	return f
 }
 
-func (f *Failure) Got(v any) *Failure {
-	f.got = obj.NewObject(v)
+func (f *Failure) Got(o *obj.Object) *Failure {
+	f.got = o
 	return f
 }
 
-func (f *Failure) Expect(v any) *Failure {
-	f.expect = obj.NewObject(v)
+func (f *Failure) Expect(o *obj.Object) *Failure {
+	f.expect = o
 	return f
 }
 

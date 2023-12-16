@@ -25,6 +25,27 @@ func stub() {
 	}
 }
 
+func TestError(t *testing.T) {
+	stub()
+
+	err := fmt.Errorf("error example %d", 123)
+	Got(err).Fail(t, "oops")
+
+    // Fail reason:    oops
+    // Type:           Got:*errors.errorString
+    // Actually got:   error example 123
+
+	gotTypeRe := regexp.MustCompile(`Type:\s*\tGot:\*errors\.errorString`)
+	if gotTypeRe.FindStringSubmatch(res) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", gotTypeRe.String(), res)
+	}
+
+	gotRe := regexp.MustCompile(`Actually got:\s*\terror example 123`)
+	if gotRe.FindStringSubmatch(res) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", gotRe.String(), res)
+	}
+}
+
 func TestFailGot(t *testing.T) {
 	stub()
 
