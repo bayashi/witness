@@ -51,11 +51,18 @@ func TestFailGot(t *testing.T) {
 
 	got := "got string"
 	reason := "failure reason"
-	Got(got).Fail(t, reason)
+	Got(got).Name("Gotcha").Fail(t, reason)
 
 	// Fail reason:    failure reason
 	// Type:           Got:string
 	// Actually got:   "got string"
+
+	if !strings.Contains(res, "Test name:") {
+		t.Errorf("Expected to be contained the string `Test name:`, but not: %q", res)
+	}
+	if !strings.Contains(res, "TestFailGot, Gotcha") {
+		t.Errorf("Expected to be contained the string `Test name:`, but not: %q", res)
+	}
 
 	if !strings.Contains(res, "Trace:") {
 		t.Errorf("Expected to be contained the string `Trace:`, but not: %q", res)
@@ -92,6 +99,9 @@ func TestFailGotExpect(t *testing.T) {
 	// Expected:       "expect string"
 	// Actually got:   "got string"
 
+	if !strings.Contains(res, "Test name:") {
+		t.Errorf("Expected to be contained the string `Test name:`, but not: %q", res)
+	}
 	if !strings.Contains(res, "Trace:") {
 		t.Errorf("Expected to be contained the string `Trace:`, but not: %q", res)
 	}

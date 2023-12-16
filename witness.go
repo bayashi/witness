@@ -125,13 +125,14 @@ func (w *Witness) Message(label string, msg string) *Witness {
 
 var funcFail = func(t *testing.T, r *report.Failure) {
 	t.Helper()
+	t.Fail()
 	t.Error(r.Put())
 }
 
 // Do fail with report
 func (w *Witness) Fail(t *testing.T, reason string) {
 	t.Helper()
-	funcFail(t, w.buildReport(reason))
+	funcFail(t, w.buildReport(t, reason))
 }
 
 var funcFailNow = func(t *testing.T, r *report.Failure) {
@@ -142,11 +143,17 @@ var funcFailNow = func(t *testing.T, r *report.Failure) {
 // Do fail with report and stop running test right now
 func (w *Witness) FailNow(t *testing.T, reason string) {
 	t.Helper()
-	funcFailNow(t, w.buildReport(reason))
+	funcFailNow(t, w.buildReport(t, reason))
 }
 
-func (w *Witness) buildReport(reason string) *report.Failure {
-	r := baseReprot(reason).Name(w.name).Messages(w.messages)
+func (w *Witness) buildReport(t *testing.T, reason string) *report.Failure {
+	r := baseReprot(reason).Messages(w.messages)
+
+	if w.name != "" {
+		r.Name(strings.Join([]string{t.Name(), w.name}, ", "))
+	} else {
+		r.Name(t.Name())
+	}
 
 	if w.got != nil && w.got.Touch() {
 		r.Got(w.got)

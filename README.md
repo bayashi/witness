@@ -33,6 +33,7 @@ func TestExample(t *testing.T) {
 below result will be shown:
 
 ```go
+Test name:      TestExample
 Trace:          /home/usr/go/src/github.com/bayashi/witness/witness_test.go:14
 Fail reason:    Not same
 Type:           Expect:string, Got:string
@@ -49,6 +50,7 @@ w.Got(g).Expect(e).ShowMore().Fail(t, "Not same")
 And then,
 
 ```go
+Test name:      TestExample
 Trace:          /home/usr/go/src/github.com/bayashi/witness/witness_test.go:14
 Fail reason:    Not same
 Type:           Expect:string, Got:string
