@@ -19,7 +19,7 @@ type Failure struct {
 	rawExpect string      `label:"Raw Expect"`
 	rawGot    string      `label:"Raw Got"`
 	reason    string      `label:"Fail reason"`
-	name      string      `label:"Test Name"`
+	name      string      `label:"Test name"`
 	trace     string      `label:"Trace"`
 	messages  []map[string]string
 }
