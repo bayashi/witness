@@ -2,6 +2,8 @@ package report
 
 import (
 	"testing"
+
+	"github.com/bayashi/witness/obj"
 )
 
 func TestReport(t *testing.T) {
@@ -33,7 +35,7 @@ func TestSetter(t *testing.T) {
 		t.Errorf("Wrong Reason(): %#v", f.reason)
 	}
 
-	f = f.Got("g")
+	f = f.Got(obj.NewObject("g"))
 	if f.got.AsRawValue() != "g" {
 		t.Errorf("Wrong Got(): %#v", f.got)
 	}
@@ -42,7 +44,7 @@ func TestSetter(t *testing.T) {
 		t.Errorf("Wrong GotAsRaw(): %#v", f.rawGot)
 	}
 
-	f = f.Expect("e")
+	f = f.Expect(obj.NewObject("e"))
 	if f.expect.AsRawValue() != "e" {
 		t.Errorf("Wrong Expect(): %#v", f.expect)
 	}
