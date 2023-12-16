@@ -189,10 +189,12 @@ func setRawForReport(w *Witness, r *report.Failure) *report.Failure {
 }
 
 // Fail is shortcut method. These are same expression.
+//
 //	witness.Got(got).Fail(t, reason)
 //	witness.Fail(t, reason, got)
 //
 // Fail with 2 values cases are below
+//
 //	witness.Got(got).Expect(expect).Fail(t, reason)
 //	witness.Fail(t, reason, got, expect)
 func Fail(t *testing.T, reason string, got any, expect ...any) {
