@@ -50,7 +50,7 @@ func (w *Witness) ShowRaw() *Witness {
 }
 
 // Turn on flags for both showDiff and showRaw
-func (w *Witness) ShowMore() *Witness {
+func (w *Witness) ShowAll() *Witness {
 	return w.ShowDiff().ShowRaw()
 }
 
