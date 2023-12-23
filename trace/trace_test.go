@@ -15,3 +15,10 @@ func TestInfo(t *testing.T) {
 		t.Errorf("trace was not match Regexp:`%s`, Got:`%s`", traceRegexp.String(), trace[0])
 	}
 }
+
+func TestSkipMyself(t *testing.T) {
+	line := "/home/usr/go/pkg/mod/github.com/bayashi/witness@v0.0.8/trace/trace.go"
+	if !skipMyself(line) {
+		t.Error("Expect to skip, but not skipped")
+	}
+}
