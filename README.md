@@ -44,7 +44,7 @@ Actually got:   "a\nb\nc"
 It's able to show more additional info:
 
 ```go
-w.Got(g).Expect(e).ShowMore().Fail(t, "Not same")
+w.Got(g).Expect(e).ShowAll().Fail(t, "Not same")
 ```
 
 And then,
