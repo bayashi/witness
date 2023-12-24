@@ -9,7 +9,7 @@ import (
 	"unicode/utf8"
 )
 
-var regexpMine = regexp.MustCompile(`/witness@v[0-9][0-9\.][0-9]/(witness\.go|trace)`)
+var regexpMine = regexp.MustCompile(`/witness@v[0-9][0-9\.]+[0-9]/(witness\.go|trace)`)
 
 var skipMyself = func(filepath string) bool {
 	return strings.Contains(filepath, "witness/witness.go") || strings.Contains(filepath, "witness/trace/trace.go") ||
