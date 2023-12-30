@@ -78,6 +78,8 @@ So easy and fair, isn't this?
 
 You shouldn't need to spend your time anymore to show fail report.
 
+See also [witness-showcase](https://github.com/bayashi/witness-showcase) for actual outputs on fail.
+
 And, there is a shortcut function, direct `Fail`, instead of builder interface. Below lines are same.
 
 ```go
