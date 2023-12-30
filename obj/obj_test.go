@@ -2,6 +2,7 @@ package obj
 
 import (
 	"fmt"
+	"regexp"
 	"testing"
 )
 
@@ -51,6 +52,26 @@ func TestIsDumpableRawType(t *testing.T) {
 	}
 	if o := NewObject(7); o.IsDumpableRawType() {
 		t.Error("IsDumpableRawType() was wrong")
+	}
+}
+
+func TestIsPointerType(t *testing.T) {
+	i := 123
+	if o := NewObject(&i); !o.IsPointerType() {
+		t.Error("IsPointerType() was wrong")
+	}
+	if o := NewObject(7); o.IsPointerType() {
+		t.Error("IsPointerType() was wrong")
+	}
+}
+
+func TestPointerValue(t *testing.T) {
+	i := 123
+	o := NewObject(&i)
+
+	expectRe := regexp.MustCompile(`\(\*int\)\([0-9a-fx]+\)`)
+	if expectRe.FindStringSubmatch(o.AsString()) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
 	}
 }
 
