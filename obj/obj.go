@@ -66,7 +66,11 @@ func (o *Object) AsString() string {
 	case error:
 		return fmt.Sprintf("%+v", o.value)
 	default:
-		return fmt.Sprintf("%#v", o.value)
+		if o.IsStructType() {
+			return fmt.Sprintf("%p, %#v", &o.value, o.value)
+		} else {
+			return fmt.Sprintf("%#v", o.value)
+		}
 	}
 }
 
@@ -104,6 +108,11 @@ func (o *Object) IsDumpableRawType() bool {
 // Return boolean whether the value is a pointer
 func (o *Object) IsPointerType() bool {
 	return o.value != nil && reflect.TypeOf(o.value).Kind() == reflect.Pointer
+}
+
+// Return boolean whether the value is a struct
+func (o *Object) IsStructType() bool {
+	return o.value != nil && reflect.TypeOf(o.value).Kind() == reflect.Struct
 }
 
 // format and truncate. For `fmt/print.go` Formatter interface

@@ -75,6 +75,16 @@ func TestPointerValue(t *testing.T) {
 	}
 }
 
+func TestStructValue(t *testing.T) {
+	i := struct{ ID int }{ ID: 123 }
+	o := NewObject(i)
+
+	expectRe := regexp.MustCompile(`[0-9a-fx]+, struct { ID int }{ID:123}`)
+	if expectRe.FindStringSubmatch(o.AsString()) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	}
+}
+
 func TestDump(t *testing.T) {
 	o := NewObject(123)
 	if o.AsDumpString() != "(int) 123\n" {
