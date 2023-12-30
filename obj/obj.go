@@ -101,6 +101,11 @@ func (o *Object) IsDumpableRawType() bool {
 	return false
 }
 
+// Return boolean whether the value is a pointer
+func (o *Object) IsPointerType() bool {
+	return o.value != nil && reflect.TypeOf(o.value).Kind() == reflect.Pointer
+}
+
 // format and truncate. For `fmt/print.go` Formatter interface
 func (o *Object) Format(s fmt.State, verb rune) {
 	switch verb {
