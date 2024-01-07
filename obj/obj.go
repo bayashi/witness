@@ -48,7 +48,7 @@ func (o *Object) AsType() string {
 
 // Return the value as string that was converted by fmt.Sprintf for each type
 func (o *Object) AsString() string {
-	if o == nil || !o.touch {
+	if !o.touch {
 		return ""
 	}
 
@@ -59,15 +59,20 @@ func (o *Object) AsString() string {
 		return "<nil>"
 	case bool:
 		return fmt.Sprintf("<%t>", o.value)
+	case *bool:
+		return o.AsDumpString()
 	case int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64:
 		return fmt.Sprintf("%d", o.value)
 	case float32, float64, complex64, complex128:
 		return fmt.Sprintf("%g", o.value)
+	case *int, *int8, *int16, *int32, *int64, *uint, *uint8, *uint16, *uint32, *uint64,
+			*float32, *float64, *complex64, *complex128:
+		return o.AsDumpString()
 	case error:
-		return fmt.Sprintf("%+v", o.value)
+		return o.AsDumpString()
 	default:
-		if o.IsStructType() {
-			return fmt.Sprintf("%p, %#v", &o.value, o.value)
+		if o.IsPointerType() {
+			return fmt.Sprintf("%p, %#v", o.value, o.value)
 		} else {
 			return fmt.Sprintf("%#v", o.value)
 		}
