@@ -40,7 +40,7 @@ func TestError(t *testing.T) {
 		t.Errorf("Not matched the regexp `%s` for %q", gotTypeRe.String(), res)
 	}
 
-	gotRe := regexp.MustCompile(`Actually got:\s*\terror example 123`)
+	gotRe := regexp.MustCompile(`Actually got:\s*\t\(\*errors\.errorString\)\([0-9a-fx]+\)\(error example 123\)`)
 	if gotRe.FindStringSubmatch(res) == nil {
 		t.Errorf("Not matched the regexp `%s` for %q", gotRe.String(), res)
 	}

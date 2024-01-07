@@ -65,11 +65,41 @@ func TestIsPointerType(t *testing.T) {
 	}
 }
 
-func TestPointerValue(t *testing.T) {
+func TestBooleanPointer(t *testing.T) {
+	f := false
+	o := NewObject(&f)
+
+	expectRe := regexp.MustCompile(`\(\*bool\)\([0-9a-fx]+\)\(false\)`)
+	if expectRe.FindStringSubmatch(o.AsString()) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	}
+}
+
+func TestError(t *testing.T) {
+	e := fmt.Errorf("foo error")
+	o := NewObject(e)
+
+	expectRe := regexp.MustCompile(`\(\*errors\.errorString\)\([0-9a-fx]+\)\(foo error\)`)
+	if expectRe.FindStringSubmatch(o.AsString()) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	}
+}
+
+func TestPointerValueInt(t *testing.T) {
 	i := 123
 	o := NewObject(&i)
 
-	expectRe := regexp.MustCompile(`\(\*int\)\([0-9a-fx]+\)`)
+	expectRe := regexp.MustCompile(`\(\*int\)\([0-9a-fx]+\)\(123\)`)
+	if expectRe.FindStringSubmatch(o.AsString()) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	}
+}
+
+func TestPointerValueFloat(t *testing.T) {
+	var i float64 = 0.123
+	o := NewObject(&i)
+
+	expectRe := regexp.MustCompile(`\(*float64\)\([0-9a-fx]+\)\(0\.123\)`)
 	if expectRe.FindStringSubmatch(o.AsString()) == nil {
 		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
 	}
@@ -79,7 +109,17 @@ func TestStructValue(t *testing.T) {
 	i := struct{ ID int }{ ID: 123 }
 	o := NewObject(i)
 
-	expectRe := regexp.MustCompile(`[0-9a-fx]+, struct { ID int }{ID:123}`)
+	expectRe := regexp.MustCompile(`struct { ID int }{ID:123}`)
+	if expectRe.FindStringSubmatch(o.AsString()) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	}
+}
+
+func TestStructPointerValue(t *testing.T) {
+	i := struct{ ID int }{ ID: 123 }
+	o := NewObject(&i)
+
+	expectRe := regexp.MustCompile(`[0-9a-fx]+, &struct { ID int }{ID:123}`)
 	if expectRe.FindStringSubmatch(o.AsString()) == nil {
 		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
 	}
