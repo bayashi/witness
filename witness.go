@@ -129,10 +129,12 @@ func (w *Witness) Expect(v any) *Witness {
 	return w
 }
 
-func baseReprot(reason string) *report.Failure {
-	return report.NewFailure().
-		Trace(strings.Join(trace.Info(), "\n\t")).
-		Reason(reason)
+// Set additional messages to show
+func Message(label string, msg string) *Witness {
+	w := &Witness{}
+	w.messages = append(w.messages, map[string]string{label: msg})
+
+	return w
 }
 
 // Set additional messages to show
@@ -140,6 +142,12 @@ func (w *Witness) Message(label string, msg string) *Witness {
 	w.messages = append(w.messages, map[string]string{label: msg})
 
 	return w
+}
+
+func baseReprot(reason string) *report.Failure {
+	return report.NewFailure().
+		Trace(strings.Join(trace.Info(), "\n\t")).
+		Reason(reason)
 }
 
 var funcFail = func(t *testing.T, r *report.Failure) {
