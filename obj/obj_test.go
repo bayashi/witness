@@ -2,8 +2,9 @@ package obj
 
 import (
 	"fmt"
-	"regexp"
 	"testing"
+
+	tu "github.com/bayashi/witness/testutil"
 )
 
 type Example struct {
@@ -69,9 +70,8 @@ func TestBooleanPointer(t *testing.T) {
 	f := false
 	o := NewObject(&f)
 
-	expectRe := regexp.MustCompile(`\(\*bool\)\([0-9a-fx]+\)\(false\)`)
-	if expectRe.FindStringSubmatch(o.AsString()) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	if ok, msg := tu.Match(`\(\*bool\)\([0-9a-fx]+\)\(false\)`, o.AsString()); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -79,9 +79,8 @@ func TestError(t *testing.T) {
 	e := fmt.Errorf("foo error")
 	o := NewObject(e)
 
-	expectRe := regexp.MustCompile(`\(\*errors\.errorString\)\([0-9a-fx]+\)\(foo error\)`)
-	if expectRe.FindStringSubmatch(o.AsString()) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	if ok, msg := tu.Match(`\(\*errors\.errorString\)\([0-9a-fx]+\)\(foo error\)`, o.AsString()); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -89,9 +88,8 @@ func TestPointerValueInt(t *testing.T) {
 	i := 123
 	o := NewObject(&i)
 
-	expectRe := regexp.MustCompile(`\(\*int\)\([0-9a-fx]+\)\(123\)`)
-	if expectRe.FindStringSubmatch(o.AsString()) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	if ok, msg := tu.Match(`\(\*int\)\([0-9a-fx]+\)\(123\)`, o.AsString()); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -99,9 +97,8 @@ func TestPointerValueFloat(t *testing.T) {
 	var i float64 = 0.123
 	o := NewObject(&i)
 
-	expectRe := regexp.MustCompile(`\(*float64\)\([0-9a-fx]+\)\(0\.123\)`)
-	if expectRe.FindStringSubmatch(o.AsString()) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	if ok, msg := tu.Match(`\(*float64\)\([0-9a-fx]+\)\(0\.123\)`, o.AsString()); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -109,9 +106,8 @@ func TestStructValue(t *testing.T) {
 	i := struct{ ID int }{ ID: 123 }
 	o := NewObject(i)
 
-	expectRe := regexp.MustCompile(`struct { ID int }{ID:123}`)
-	if expectRe.FindStringSubmatch(o.AsString()) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	if ok, msg := tu.Match(`struct { ID int }{ID:123}`, o.AsString()); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -119,9 +115,8 @@ func TestStructPointerValue(t *testing.T) {
 	i := struct{ ID int }{ ID: 123 }
 	o := NewObject(&i)
 
-	expectRe := regexp.MustCompile(`[0-9a-fx]+, &struct { ID int }{ID:123}`)
-	if expectRe.FindStringSubmatch(o.AsString()) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), o.AsString())
+	if ok, msg := tu.Match(`[0-9a-fx]+, &struct { ID int }{ID:123}`, o.AsString()); !ok {
+		t.Error(msg)
 	}
 }
 

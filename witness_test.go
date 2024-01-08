@@ -2,11 +2,11 @@ package witness
 
 import (
 	"fmt"
-	"regexp"
 	"strings"
 	"testing"
 
 	"github.com/bayashi/witness/report"
+	tu "github.com/bayashi/witness/testutil"
 )
 
 // Global variables to check result
@@ -35,19 +35,16 @@ func TestNil(t *testing.T) {
 	// Expected:       <nil>
 	// Actually got:   <nil>
 
-	gotTypeRe := regexp.MustCompile(`Type:\s*\tExpect:<nil>, Got:<nil>`)
-	if gotTypeRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", gotTypeRe.String(), res)
+	if ok, msg := tu.Match(`Type:\s*\tExpect:<nil>, Got:<nil>`, res); !ok {
+		t.Error(msg)
 	}
 
-	expectRe := regexp.MustCompile(`Expected:\s*\t<nil>`)
-	if expectRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), res)
+	if ok, msg := tu.Match(`Expected:\s*\t<nil>`, res); !ok {
+		t.Error(msg)
 	}
 
-	gotRe := regexp.MustCompile(`Actually got:\s*\t<nil>`)
-	if gotRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", gotRe.String(), res)
+	if ok, msg := tu.Match(`Actually got:\s*\t<nil>`, res); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -61,14 +58,12 @@ func TestError(t *testing.T) {
     // Type:           Got:*errors.errorString
     // Actually got:   error example 123
 
-	gotTypeRe := regexp.MustCompile(`Type:\s*\tGot:\*errors\.errorString`)
-	if gotTypeRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", gotTypeRe.String(), res)
+	if ok, msg := tu.Match(`Type:\s*\tGot:\*errors\.errorString`, res); !ok {
+		t.Error(msg)
 	}
 
-	gotRe := regexp.MustCompile(`Actually got:\s*\t\(\*errors\.errorString\)\([0-9a-fx]+\)\(error example 123\)`)
-	if gotRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", gotRe.String(), res)
+	if ok, msg := tu.Match(`Actually got:\s*\t\(\*errors\.errorString\)\([0-9a-fx]+\)\(error example 123\)`, res); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -106,9 +101,8 @@ func TestFailGot(t *testing.T) {
 		t.Errorf("Expected to be contained type, but not: %q", res)
 	}
 
-	gotRe := regexp.MustCompile(fmt.Sprintf("Actually got:\\s*\\t%q", got))
-	if gotRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", gotRe.String(), res)
+	if ok, msg := tu.Match(fmt.Sprintf("Actually got:\\s*\\t%q", got), res); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -144,14 +138,12 @@ func TestFailGotExpect(t *testing.T) {
 		t.Errorf("Expected to be contained types, but not: %q", res)
 	}
 
-	gotRe := regexp.MustCompile(fmt.Sprintf("Actually got:\\s*\\t%q", got))
-	if gotRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", gotRe.String(), res)
+	if ok, msg := tu.Match(fmt.Sprintf("Actually got:\\s*\\t%q", got), res); !ok {
+		t.Error(msg)
 	}
 
-	expectRe := regexp.MustCompile(fmt.Sprintf("Expected:\\s*\\t%q", expect))
-	if expectRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), res)
+	if ok, msg := tu.Match(fmt.Sprintf("Expected:\\s*\\t%q", expect), res); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -181,9 +173,8 @@ func TestFailWithDiff(t *testing.T) {
 		t.Errorf("Expected to be contained the string `Diff details:`, but not: %q", res)
 	}
 
-	diffRe := regexp.MustCompile("\\s*a\n\\s*-d\n\\s*\\+b\n\\s*c")
-	if diffRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", diffRe.String(), res)
+	if ok, msg := tu.Match("\\s*a\n\\s*-d\n\\s*\\+b\n\\s*c", res); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -212,14 +203,12 @@ func TestFailWithRawData(t *testing.T) {
 	//                 c
 	//                 ---
 
-	rawExpectRe := regexp.MustCompile("Raw Expect:\\s*\t---\n\\s*a\n\\s*d")
-	if rawExpectRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", rawExpectRe.String(), res)
+	if ok, msg := tu.Match("Raw Expect:\\s*\t---\n\\s*a\n\\s*d", res); !ok {
+		t.Error(msg)
 	}
 
-	rawGotRe := regexp.MustCompile("Raw Got:\\s*\t---\n\\s*a\n\\s*b")
-	if rawGotRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", rawGotRe.String(), res)
+	if ok, msg := tu.Match("Raw Got:\\s*\t---\n\\s*a\n\\s*b", res); !ok {
+		t.Error(msg)
 	}
 }
 
@@ -237,8 +226,7 @@ func TestFailWithAdditionalMessage(t *testing.T) {
 	// Actually got:   "a\nb\nc"
 	// Example Label:  Some info
 
-	infoRe := regexp.MustCompile("Example Label:\\s*\tSome info\n")
-	if infoRe.FindStringSubmatch(res) == nil {
-		t.Errorf("Not matched the regexp `%s` for %q", infoRe.String(), res)
+	if ok, msg := tu.Match("Example Label:\\s*\tSome info\n", res); !ok {
+		t.Error(msg)
 	}
 }
