@@ -34,7 +34,14 @@ const ShowDiff, ShowRaw, NotShowDiff, NotShowRaw = true, true, false, false
 //	w := witness.New(witness.ShowDiff, witness.ShowRaw)
 //	w.Got(123).Fail(t, "Not expected")
 //	w.Got("c").Fail(t, "Expected d")
-func New(showDiff bool, showRaw bool) *Witness {
+func New(showFlag ...bool) *Witness {
+	var showDiff, showRaw = false, false
+	if len(showFlag) >= 2 {
+		showDiff = showFlag[0]
+		showRaw  = showFlag[1]
+	} else if len(showFlag) == 1 {
+		showDiff = showFlag[0]
+	}
 	return &Witness{
 		showDiff: showDiff,
 		showRaw:  showRaw,
