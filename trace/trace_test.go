@@ -1,8 +1,9 @@
 package trace
 
 import (
-	"regexp"
 	"testing"
+
+	tu "github.com/bayashi/witness/testutil"
 )
 
 func TestInfo(t *testing.T) {
@@ -10,9 +11,9 @@ func TestInfo(t *testing.T) {
 	if len(trace) != 1 {
 		t.Error("trace length should be 1.")
 	}
-	var traceRegexp = regexp.MustCompile(`/witness/trace/trace_test\.go:\d+$`)
-	if !traceRegexp.MatchString(trace[0]) {
-		t.Errorf("trace was not match Regexp:`%s`, Got:`%s`", traceRegexp.String(), trace[0])
+
+	if ok, msg := tu.Match(`/witness/trace/trace_test\.go:\d+$`, trace[0]); !ok {
+		t.Error(msg)
 	}
 }
 

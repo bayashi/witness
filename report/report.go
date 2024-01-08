@@ -90,7 +90,7 @@ func (f *Failure) Put() string {
 		lines += fmt.Sprintf(
 			"\t%s%s%s\t%s\n",
 			c.Label,
-			r.Separator(),
+			r.separator(),
 			c.indentSpaces(longestLen),
 			indentMessage(c.Body, longestLen),
 		)
@@ -167,7 +167,7 @@ type Report struct {
 	LabelSeparator *string
 }
 
-func (r *Report) Separator() string {
+func (r *Report) separator() string {
 	if r.LabelSeparator != nil {
 		return *r.LabelSeparator
 	}
