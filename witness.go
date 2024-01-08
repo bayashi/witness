@@ -16,9 +16,9 @@ type Witness struct {
 	got      *obj.Object
 	expect   *obj.Object
 	name     string
-	messages []map[string]string // additional info
+	messages []map[string]string // additional info as {"label": "message"}
 	showDiff bool                // If true, show a diff string for "got" and "expect"
-	showRaw  bool                // If true, show raw values as string or dumped data for "got" and "expect"
+	showRaw  bool                // If true, show raw values as string(raw string or dumped string) for "got" and "expect"
 }
 
 // You can write "witness.New(witness.ShowDiff, witness.NotShowRaw)" instead of raw boolean
