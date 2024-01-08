@@ -25,6 +25,32 @@ func stub() {
 	}
 }
 
+func TestNil(t *testing.T) {
+	stub()
+
+	Got(nil).Expect(nil).Fail(t, "oops")
+
+	// Fail reason:    oops
+	// Type:           Expect:<nil>, Got:<nil>
+	// Expected:       <nil>
+	// Actually got:   <nil>
+
+	gotTypeRe := regexp.MustCompile(`Type:\s*\tExpect:<nil>, Got:<nil>`)
+	if gotTypeRe.FindStringSubmatch(res) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", gotTypeRe.String(), res)
+	}
+
+	expectRe := regexp.MustCompile(`Expected:\s*\t<nil>`)
+	if expectRe.FindStringSubmatch(res) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", expectRe.String(), res)
+	}
+
+	gotRe := regexp.MustCompile(`Actually got:\s*\t<nil>`)
+	if gotRe.FindStringSubmatch(res) == nil {
+		t.Errorf("Not matched the regexp `%s` for %q", gotRe.String(), res)
+	}
+}
+
 func TestError(t *testing.T) {
 	stub()
 
