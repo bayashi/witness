@@ -24,12 +24,16 @@ type Witness struct {
 // You can write "witness.New(witness.ShowDiff, witness.NotShowRaw)" instead of raw boolean
 const ShowDiff, ShowRaw, NotShowDiff, NotShowRaw = true, true, false, false
 
-// you don't need to call `New`. You can call `Got` or `Expect` directly without calling `New`.
+// You don't need to call `New`. You can call `Got` or `Expect` directly without calling `New` like below.
 //
 //	witness.Got("abc").Fail(t, "somehow")
 //
-// Above works. You should call `New` when you need to set options for several reports
+// You should call `New` when you need to set options for several reports
 // in order to avoid calling `ShowDiff` or `ShowRaw` for each report.
+//
+//	w := witness.New(witness.ShowDiff, witness.ShowRaw)
+//	w.Got(123).Fail(t, "Not expected")
+//	w.Got("c").Fail(t, "Expected d")
 func New(showDiff bool, showRaw bool) *Witness {
 	return &Witness{
 		showDiff: showDiff,
@@ -60,6 +64,8 @@ func Name(n string) *Witness {
 		name: n,
 	}
 }
+
+// Set test name
 func (w *Witness) Name(n string) *Witness {
 	w.name = n
 
@@ -72,6 +78,8 @@ func Namef(format string, a ...any) *Witness {
 		name: fmt.Sprintf(format, a...),
 	}
 }
+
+// Set test name by format
 func (w *Witness) Namef(format string, a ...any) *Witness {
 	w.name = fmt.Sprintf(format, a...)
 
@@ -84,6 +92,8 @@ func Got(v any) *Witness {
 		got: obj.NewObject(v),
 	}
 }
+
+// Set Got value
 func (w *Witness) Got(v any) *Witness {
 	if w.got != nil && w.got.Touch() {
 		panic("Already set Got()")
@@ -100,6 +110,8 @@ func Expect(v any) *Witness {
 		expect: obj.NewObject(v),
 	}
 }
+
+// Set Expect value
 func (w *Witness) Expect(v any) *Witness {
 	if w.expect != nil && w.expect.Touch() {
 		panic("Already set Expect()")
@@ -212,6 +224,15 @@ func Fail(t *testing.T, reason string, got any, expect ...any) {
 	}
 }
 
+// FailNow is shortcut method. There are same expression.
+//
+//	witness.Got(got).FailNow(t, reason)
+//	witness.FailNow(t, reason, got)
+//
+// FailNow with 2 values cases are below
+//
+//	witness.Got(got).Expect(expect).FailNow(t, reason)
+//	witness.FailNow(t, reason, got, expect)
 func FailNow(t *testing.T, reason string, got any, expect ...any) {
 	if len(expect) == 0 {
 		Got(got).FailNow(t, reason)
@@ -221,11 +242,12 @@ func FailNow(t *testing.T, reason string, got any, expect ...any) {
 }
 
 // Diff is to get a diff string of 2 objects for debugging in test
+// Two args should be same type. Otherwise, diff string will be a blank string.
 func Diff(a any, b any) string {
 	return diff.DiffSimple(a, b)
 }
 
-// Dump is to get a dumped string for debugging in test
+// Dump is to get a dumped string by `spew.Sdump` for debugging in test
 func Dump(v any) string {
 	return obj.NewObject(v).AsDumpString()
 }
