@@ -103,7 +103,7 @@ func TestPointerValueFloat(t *testing.T) {
 }
 
 func TestStructValue(t *testing.T) {
-	i := struct{ ID int }{ ID: 123 }
+	i := struct{ ID int }{ID: 123}
 	o := NewObject(i)
 
 	if ok, msg := tu.Match(`struct { ID int }{ID:123}`, o.AsString()); !ok {
@@ -112,7 +112,7 @@ func TestStructValue(t *testing.T) {
 }
 
 func TestStructPointerValue(t *testing.T) {
-	i := struct{ ID int }{ ID: 123 }
+	i := struct{ ID int }{ID: 123}
 	o := NewObject(&i)
 
 	if ok, msg := tu.Match(`[0-9a-fx]+, &struct { ID int }{ID:123}`, o.AsString()); !ok {

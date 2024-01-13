@@ -54,9 +54,9 @@ func TestError(t *testing.T) {
 	err := fmt.Errorf("error example %d", 123)
 	Got(err).Fail(t, "oops")
 
-    // Fail reason:    oops
-    // Type:           Got:*errors.errorString
-    // Actually got:   error example 123
+	// Fail reason:    oops
+	// Type:           Got:*errors.errorString
+	// Actually got:   error example 123
 
 	if ok, msg := tu.Match(`Type:\s*\tGot:\*errors\.errorString`, res); !ok {
 		t.Error(msg)
