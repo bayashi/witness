@@ -38,7 +38,7 @@ func New(showFlag ...bool) *Witness {
 	var showDiff, showRaw = false, false
 	if len(showFlag) >= 2 {
 		showDiff = showFlag[0]
-		showRaw  = showFlag[1]
+		showRaw = showFlag[1]
 	} else if len(showFlag) == 1 {
 		showDiff = showFlag[0]
 	}
