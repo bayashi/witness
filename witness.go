@@ -93,14 +93,14 @@ func (w *Witness) Namef(format string, a ...any) *Witness {
 	return w
 }
 
-// Set Got value
+// Set a value you got
 func Got(v any) *Witness {
 	return &Witness{
 		got: obj.NewObject(v),
 	}
 }
 
-// Set Got value
+// Set a value you got
 func (w *Witness) Got(v any) *Witness {
 	if w.got != nil && w.got.Touch() {
 		panic("Already set Got()")
@@ -111,14 +111,14 @@ func (w *Witness) Got(v any) *Witness {
 	return w
 }
 
-// Set Expect value
+// Set a value you expect
 func Expect(v any) *Witness {
 	return &Witness{
 		expect: obj.NewObject(v),
 	}
 }
 
-// Set Expect value
+// Set a value you expect
 func (w *Witness) Expect(v any) *Witness {
 	if w.expect != nil && w.expect.Touch() {
 		panic("Already set Expect()")
