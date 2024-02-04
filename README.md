@@ -24,7 +24,7 @@ func TestExample(t *testing.T) {
     e := "a\nd\nc"
 
     if g != e {
-        w.Got(g).Expect(e).Fail(t, "Not same")
+        w.Fail(t, "Not same", g, e)
     }
 }
 ```
@@ -40,7 +40,13 @@ Expected:       "a\nd\nc"
 Actually got:   "a\nb\nc"
 ```
 
-It's able to show more additional info:
+There is a builder interface to specify waht you report.
+
+```go
+w.Got(g).Expect(e).Fail(t, "Not same")
+```
+
+There are switches to show more additional info:
 
 ```go
 w.Got(g).Expect(e).ShowAll().Fail(t, "Not same")
@@ -78,16 +84,9 @@ So easy and fair, isn't this?
 
 You shouldn't need to spend your time anymore to show fail report.
 
-See also [witness-showcase](https://github.com/bayashi/witness-showcase) for actual outputs on fail.
+See [witness-showcase](https://github.com/bayashi/witness-showcase) for actual outputs on fail.
 
-And, there is a shortcut function, direct `Fail`, instead of builder interface. Below lines are same.
-
-```go
-    w.Got(g).Expect(e).Fail(t, "Not same")
-    w.Fail(t, "Not same", g, e)
-```
-
-See [Witness Package reference](https://pkg.go.dev/github.com/bayashi/witness) for more details.
+Also see [Witness Package reference](https://pkg.go.dev/github.com/bayashi/witness) for more details.
 
 ## Installation
 
