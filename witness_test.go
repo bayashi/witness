@@ -81,7 +81,7 @@ func TestFailGot(t *testing.T) {
 	if !strings.Contains(res, "Test name:") {
 		t.Errorf("Expected to be contained the string `Test name:`, but not: %q", res)
 	}
-	if !strings.Contains(res, "TestFailGot, Gotcha") {
+	if !strings.Contains(res, "TestFailGot/Gotcha") {
 		t.Errorf("Expected to be contained the string `Test name:`, but not: %q", res)
 	}
 
