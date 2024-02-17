@@ -177,7 +177,7 @@ func (w *Witness) buildReport(t *testing.T, reason string) *report.Failure {
 	r := baseReprot(reason).Messages(w.messages)
 
 	if w.name != "" {
-		r.Name(strings.Join([]string{t.Name(), w.name}, ", "))
+		r.Name(strings.Join([]string{t.Name(), w.name}, "/"))
 	} else {
 		r.Name(t.Name())
 	}
