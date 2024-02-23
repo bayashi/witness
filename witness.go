@@ -232,6 +232,7 @@ func setRawForReport(w *Witness, r *report.Failure) *report.Failure {
 //	witness.Got(got).Expect(expect).Fail(t, reason)
 //	witness.Fail(t, reason, got, expect)
 func Fail(t *testing.T, reason string, got any, expect ...any) {
+	t.Helper()
 	if len(expect) == 0 {
 		Got(got).Fail(t, reason)
 	} else {
@@ -249,6 +250,7 @@ func Fail(t *testing.T, reason string, got any, expect ...any) {
 //	witness.Got(got).Expect(expect).FailNow(t, reason)
 //	witness.FailNow(t, reason, got, expect)
 func FailNow(t *testing.T, reason string, got any, expect ...any) {
+	t.Helper()
 	if len(expect) == 0 {
 		Got(got).FailNow(t, reason)
 	} else {
