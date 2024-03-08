@@ -22,6 +22,7 @@ type Failure struct {
 	name      string      `label:"Test name"`
 	trace     string      `label:"Trace"`
 	messages  []map[string]string
+	debugInfo []map[string]*obj.Object `label:"Debug"`
 }
 
 func NewFailure() *Failure {
@@ -70,6 +71,11 @@ func (f *Failure) RawExpect(raw string) *Failure {
 
 func (f *Failure) Messages(msgs []map[string]string) *Failure {
 	f.messages = msgs
+	return f
+}
+
+func (f *Failure) DebugInfo(info []map[string]*obj.Object) *Failure {
+	f.debugInfo = info
 	return f
 }
 
@@ -149,6 +155,13 @@ func (f *Failure) buildContents() []*Content {
 	for _, i := range f.messages {
 		for label, body := range i {
 			contents = append(contents, &Content{Label: label, Body: body})
+		}
+	}
+
+	for _, i := range f.debugInfo {
+		for label, obj := range i {
+			label = strings.Join([]string{f.fieldLabel("debugInfo"), label}, " ")
+			contents = append(contents, &Content{Label: label, Body: obj.AsString()})
 		}
 	}
 

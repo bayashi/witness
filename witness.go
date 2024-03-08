@@ -13,12 +13,13 @@ import (
 
 // Witness is a context of the fail report
 type Witness struct {
-	got      *obj.Object
-	expect   *obj.Object
-	name     string
-	messages []map[string]string // additional info as {"label": "message"}
-	showDiff bool                // If true, show a diff string for "got" and "expect"
-	showRaw  bool                // If true, show raw values as string(raw string or dumped string) for "got" and "expect"
+	got       *obj.Object
+	expect    *obj.Object
+	name      string
+	messages  []map[string]string      // additional info as {"label": "message"}
+	debugInfo []map[string]*obj.Object // Debug info as {"label": *obj.Object}
+	showDiff  bool                     // If true, show a diff string for "got" and "expect"
+	showRaw   bool                     // If true, show raw values as string(raw string or dumped string) for "got" and "expect"
 }
 
 // You can write "witness.New(witness.ShowDiff, witness.NotShowRaw)" instead of raw boolean
@@ -144,6 +145,18 @@ func (w *Witness) Message(label string, msg string) *Witness {
 	return w
 }
 
+// Set debug information to show on fail
+func Debug(label string, info any) *Witness {
+	return New().Debug(label, info)
+}
+
+// Set debug information to show on fail
+func (w *Witness) Debug(label string, info any) *Witness {
+	w.debugInfo = append(w.debugInfo, map[string]*obj.Object{label: obj.NewObject(info)})
+
+	return w
+}
+
 func baseReprot(reason string) *report.Failure {
 	return report.NewFailure().
 		Trace(strings.Join(trace.Info(), "\n\t")).
@@ -174,7 +187,7 @@ func (w *Witness) FailNow(t *testing.T, reason string) {
 }
 
 func (w *Witness) buildReport(t *testing.T, reason string) *report.Failure {
-	r := baseReprot(reason).Messages(w.messages)
+	r := baseReprot(reason).Messages(w.messages).DebugInfo(w.debugInfo)
 
 	if w.name != "" {
 		r.Name(strings.Join([]string{t.Name(), w.name}, "/"))
