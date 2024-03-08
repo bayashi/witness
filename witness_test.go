@@ -230,3 +230,19 @@ func TestFailWithAdditionalMessage(t *testing.T) {
 		t.Error(msg)
 	}
 }
+
+func TestFailWithDebugInfo(t *testing.T) {
+	stub()
+
+	Got(1).Expect(2).Debug("label", "debug info").Fail(t, "Not same")
+
+	// Fail reason:  Not same
+	// Type:         Expect:int, Got:int
+	// Expected:     2
+	// Actually got: 1
+	// Debug label:  "debug info"
+
+	if ok, msg := tu.Match(`Debug label:\s*\t"debug info"\n`, res); !ok {
+		t.Error(msg)
+	}
+}
