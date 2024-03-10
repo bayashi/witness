@@ -80,10 +80,6 @@ Raw Got:        ---
                 ---
 ```
 
-So easy and fair, isn't this?
-
-You shouldn't need to spend your time anymore to show fail report.
-
 See [witness-showcase](https://github.com/bayashi/witness-showcase) for actual outputs on fail.
 
 Also see [Witness Package reference](https://pkg.go.dev/github.com/bayashi/witness) for more details.
