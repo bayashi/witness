@@ -246,3 +246,21 @@ func TestFailWithDebugInfo(t *testing.T) {
 		t.Error(msg)
 	}
 }
+
+func TestFailWithMultipleDebugInfo(t *testing.T) {
+	stub()
+
+	Got(1).Expect(2).Debug("label", "debug info", "one more debug info").Fail(t, "Not same")
+
+	// Fail reason:  Not same
+	// Type:         Expect:int, Got:int
+	// Expected:     2
+	// Actually got: 1
+	// Debug label:  "debug info"
+	//               --
+	//               "one more debug info"
+
+	if ok, msg := tu.Match(`Debug label:[\t\s]+"debug info"\n[\t\s]+--\n[\t\s]+"one more debug info"`, res); !ok {
+		t.Error(msg)
+	}
+}
