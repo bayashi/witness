@@ -16,10 +16,10 @@ type Witness struct {
 	got       *obj.Object
 	expect    *obj.Object
 	name      string
-	messages  []map[string]string      // additional info as {"label": "message"}
-	debugInfo []map[string]*obj.Object // Debug info as {"label": *obj.Object}
-	showDiff  bool                     // If true, show a diff string for "got" and "expect"
-	showRaw   bool                     // If true, show raw values as string(raw string or dumped string) for "got" and "expect"
+	messages  []map[string]string        // additional info as {"label": "message"}
+	debugInfo []map[string][]*obj.Object // Debug info as {"label": []*obj.Object}
+	showDiff  bool                       // If true, show a diff string for "got" and "expect"
+	showRaw   bool                       // If true, show raw values as string(raw string or dumped string) for "got" and "expect"
 }
 
 // You can write "witness.New(witness.ShowDiff, witness.NotShowRaw)" instead of raw boolean
@@ -146,13 +146,17 @@ func (w *Witness) Message(label string, msg string) *Witness {
 }
 
 // Set debug information to show on fail
-func Debug(label string, info any) *Witness {
-	return New().Debug(label, info)
+func Debug(label string, info ...any) *Witness {
+	return New().Debug(label, info...)
 }
 
 // Set debug information to show on fail
-func (w *Witness) Debug(label string, info any) *Witness {
-	w.debugInfo = append(w.debugInfo, map[string]*obj.Object{label: obj.NewObject(info)})
+func (w *Witness) Debug(label string, info ...any) *Witness {
+	infoList := make([]*obj.Object, 0, len(info))
+	for _, i := range info {
+		infoList = append(infoList, obj.NewObject(i))
+	}
+	w.debugInfo = append(w.debugInfo, map[string][]*obj.Object{label: infoList})
 
 	return w
 }
