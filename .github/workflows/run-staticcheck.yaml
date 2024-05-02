@@ -9,10 +9,6 @@ on:
     paths-ignore:
       - '**/*.md'
       - '**/.gitignore'
-  pull_request:
-    paths-ignore:
-      - '**/*.md'
-      - '**/.gitignore'
 
 jobs:
   build:
@@ -36,6 +32,10 @@ jobs:
 
       - name: Run vet
         run: go vet -v ./...
+
+      - name: Check diff of gofmt
+        run: |
+            gofmt -s -w . && git diff --exit-code
 
       - name: Check diff of goimports
         run: |
