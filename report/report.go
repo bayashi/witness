@@ -163,7 +163,7 @@ func (f *Failure) buildContents() []*Content {
 			label = strings.Join([]string{f.fieldLabel("debugInfo"), label}, " ")
 			body := []string{}
 			for _, o := range objs {
-				body = append(body, o.AsString())
+				body = append(body, o.AsDumpString())
 			}
 			contents = append(contents, &Content{Label: label, Body: strings.Join(body, "\n--\n")})
 		}
