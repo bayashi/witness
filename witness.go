@@ -161,9 +161,9 @@ func (w *Witness) Debug(label string, info ...any) *Witness {
 	return w
 }
 
-func baseReprot(reason string) *report.Failure {
+func baseReprot(reason string, traceFilterFunc ...func(filepath string) bool) *report.Failure {
 	return report.NewFailure().
-		Trace(strings.Join(trace.Info(), "\n\t")).
+		Trace(strings.Join(trace.Info(traceFilterFunc...), "\n\t")).
 		Reason(reason)
 }
 
@@ -174,9 +174,9 @@ var funcFail = func(t *testing.T, r *report.Failure) {
 }
 
 // Do fail with report
-func (w *Witness) Fail(t *testing.T, reason string) {
+func (w *Witness) Fail(t *testing.T, reason string, traceFilterFunc ...func(filepath string) bool) {
 	t.Helper()
-	funcFail(t, w.buildReport(t, reason))
+	funcFail(t, w.buildReport(t, reason, traceFilterFunc...))
 }
 
 var funcFailNow = func(t *testing.T, r *report.Failure) {
@@ -185,13 +185,13 @@ var funcFailNow = func(t *testing.T, r *report.Failure) {
 }
 
 // Do fail with report and stop running test right now
-func (w *Witness) FailNow(t *testing.T, reason string) {
+func (w *Witness) FailNow(t *testing.T, reason string, traceFilterFunc ...func(filepath string) bool) {
 	t.Helper()
-	funcFailNow(t, w.buildReport(t, reason))
+	funcFailNow(t, w.buildReport(t, reason, traceFilterFunc...))
 }
 
-func (w *Witness) buildReport(t *testing.T, reason string) *report.Failure {
-	r := baseReprot(reason).Messages(w.messages).DebugInfo(w.debugInfo)
+func (w *Witness) buildReport(t *testing.T, reason string, traceFilterFunc ...func(filepath string) bool) *report.Failure {
+	r := baseReprot(reason, traceFilterFunc...).Messages(w.messages).DebugInfo(w.debugInfo)
 
 	if w.name != "" {
 		r.Name(strings.Join([]string{t.Name(), w.name}, "/"))
