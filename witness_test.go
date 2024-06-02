@@ -240,7 +240,7 @@ func TestFailWithDebugInfo(t *testing.T) {
 	// Type:         Expect:int, Got:int
 	// Expected:     2
 	// Actually got: 1
-	// Debug label:  "debug info"
+	// Debug label:  (string) (len=10) "debug info"
 
 	if ok, msg := tu.Match(`Debug label:\s*\t\(string\) \(len=10\) "debug info"\n`, res); !ok {
 		t.Error(msg)
@@ -256,9 +256,9 @@ func TestFailWithMultipleDebugInfo(t *testing.T) {
 	// Type:         Expect:int, Got:int
 	// Expected:     2
 	// Actually got: 1
-	// Debug label:  "debug info"
+	// Debug label:  (string) (len=10) "debug info"
 	//               --
-	//               "one more debug info"
+	//               (string) (len=19) "one more debug info"
 
 	if ok, msg := tu.Match(`Debug label:[\t\s]+\(string\) \(len=10\) "debug info"\n[\t\s]+--\n[\t\s]+\(string\) \(len=19\) "one more debug info"`, res); !ok {
 		t.Error(msg)
