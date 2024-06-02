@@ -11,13 +11,13 @@ import (
 
 var regexpMine = regexp.MustCompile(`/witness@v[0-9][0-9\.]+[0-9]/(witness\.go|trace)`)
 
-var skipMyself = func(filepath string) bool {
+var skipOwnWitnessLibs = func(filepath string) bool {
 	return strings.Contains(filepath, "witness/witness.go") || strings.Contains(filepath, "witness/trace/trace.go") ||
 		regexpMine.FindStringSubmatch(filepath) != nil
 }
 
 // Info method returns a list of caller info
-func Info() []string {
+func Info(traceFilterFunc ...func(filepath string) bool) []string {
 	var pc uintptr
 	var file string
 	var line int
@@ -55,7 +55,7 @@ func Info() []string {
 		lastCaller = fmt.Sprintf("%s:%d", file, line)
 
 		if len(strings.Split(file, "/")) > 1 && // https://github.com/stretchr/testify/pull/402
-			!skipMyself(file) {
+			!skipOwnWitnessLibs(file) && !skipLibs(file, traceFilterFunc...) {
 			callers = append(callers, lastCaller)
 		}
 
@@ -71,6 +71,16 @@ func Info() []string {
 	}
 
 	return callers
+}
+
+func skipLibs(filepath string, traceFilterFunc ...func(filepath string) bool) bool {
+	for _, f := range traceFilterFunc {
+		if f(filepath) {
+			return true
+		}
+	}
+
+	return false
 }
 
 func isGolangTestFunc(name string) bool {
