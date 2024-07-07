@@ -8,11 +8,14 @@ import (
 	"github.com/davecgh/go-spew/spew"
 )
 
+var DUMPER func(d any) string
+
 type Object struct {
 	value  any
 	touch  bool
 	maxLen int
 	kind   reflect.Kind
+	dumper func(d any) string
 }
 
 func NewObject(v any) *Object {
@@ -21,6 +24,16 @@ func NewObject(v any) *Object {
 		value:  v,
 		maxLen: bufio.MaxScanTokenSize,
 		kind:   reflect.ValueOf(v).Kind(),
+	}
+}
+
+func NewObjectWithDumper(v any, dumper func(d any) string) *Object {
+	return &Object{
+		touch:  true,
+		value:  v,
+		maxLen: bufio.MaxScanTokenSize,
+		kind:   reflect.ValueOf(v).Kind(),
+		dumper: dumper,
 	}
 }
 
@@ -85,6 +98,14 @@ func (o *Object) AsFmtString() string {
 
 // Return dump string even if the value would be any value
 func (o *Object) AsDumpString() string {
+	if o.dumper != nil {
+		return o.dumper(o.value)
+	}
+
+	if DUMPER != nil {
+		return DUMPER(o.value)
+	}
+
 	return spew.Sdump(o.value)
 }
 

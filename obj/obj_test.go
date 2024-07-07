@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	tu "github.com/bayashi/witness/testutil"
+	"github.com/yassinebenaid/godump"
 )
 
 type Example struct {
@@ -123,6 +124,16 @@ func TestStructPointerValue(t *testing.T) {
 func TestDump(t *testing.T) {
 	o := NewObject(123)
 	if o.AsDumpString() != "(int) 123\n" {
+		t.Error("Dump() was wrong")
+	}
+}
+
+func TestCustomDumper(t *testing.T) {
+	o := NewObjectWithDumper(map[int]int{1: 123}, func(d any) string {
+		var dumper godump.Dumper
+		return dumper.Sprint(d)
+	})
+	if o.AsDumpString() != "map[int]int:1 {\n   1: 123,\n}" {
 		t.Error("Dump() was wrong")
 	}
 }
