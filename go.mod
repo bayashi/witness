@@ -7,4 +7,4 @@ require (
 	github.com/pmezard/go-difflib v1.0.0
 )
 
-require github.com/yassinebenaid/godump v0.10.0
+require github.com/yassinebenaid/godump v0.11.1
