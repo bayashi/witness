@@ -285,3 +285,7 @@ func Diff(a any, b any) string {
 func Dump(v any) string {
 	return obj.NewObject(v).AsDumpString()
 }
+
+func (w *Witness) Dumper(dumper func(d any) string) {
+	obj.DUMPER = dumper
+}

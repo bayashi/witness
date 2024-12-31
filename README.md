@@ -1,4 +1,6 @@
-# witness
+# [DEPRECATED] witness
+
+This library was deprecated. It's included in [actually](https://github.com/bayashi/actually) now. The `witness` is no longer maintained. It will be removed from github.
 
 <a href="https://github.com/bayashi/witness/actions" title="witness CI"><img src="https://github.com/bayashi/witness/workflows/main/badge.svg" alt="witness CI"></a>
 <a href="https://goreportcard.com/report/github.com/bayashi/witness" title="witness report card" target="_blank"><img src="https://goreportcard.com/badge/github.com/bayashi/witness" alt="witness report card"></a>
@@ -79,10 +81,6 @@ Raw Got:        ---
                 c
                 ---
 ```
-
-See [witness-showcase](https://github.com/bayashi/witness-showcase) for actual outputs on fail.
-
-Also see [Witness Package reference](https://pkg.go.dev/github.com/bayashi/witness) for more details.
 
 ## Installation
 
